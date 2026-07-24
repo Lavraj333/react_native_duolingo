@@ -1,10 +1,10 @@
 import { useCssElement } from "react-native-css";
 import React from "react";
-import { StyleSheet } from "react-native";
+
 import { Image as RNImage, ImageProps as RNImageProps } from "expo-image";
 
 function CSSImage(props: RNImageProps) {
-  const style = StyleSheet.flatten(props.style) as Record<string, unknown>;
+  const style = props.style as Record<string, unknown>;
 
   return (
     <RNImage

@@ -3,11 +3,7 @@ import { Image } from "../src/tw/image";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-
-const PURPLE = "#5B4CF6";
-const NAVY = "#1F2746";
-const GRAY = "#8E93A8";
-const DOT_INACTIVE = "#D4D5DC";
+import { useRouter } from "expo-router";
 
 function SpeechBubble({
   children,
@@ -40,16 +36,9 @@ function SpeechBubble({
 function PaginationDots() {
   return (
     <View className="flex-row items-center justify-center gap-2">
-      {[0, 1, 2, 3].map((i) => (
-        <View
-          key={i}
-          className="rounded-full"
-          style={{
-            width: i === 0 ? 10 : 8,
-            height: i === 0 ? 10 : 8,
-            backgroundColor: i === 0 ? PURPLE : DOT_INACTIVE,
-          }}
-        />
+      <View className="rounded-full w-[10px] h-[10px] bg-[#5B4CF6]" />
+      {[1, 2, 3].map((i) => (
+        <View key={i} className="rounded-full w-2 h-2 bg-[#D4D5DC]" />
       ))}
     </View>
   );
@@ -57,6 +46,7 @@ function PaginationDots() {
 
 export default function Onboarding() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   return (
     <View className="flex-1 bg-white">
@@ -73,47 +63,35 @@ export default function Onboarding() {
             className="w-11 h-11"
             contentFit="contain"
           />
-          <Text
-            className="font-bold text-[28px] ml-2"
-            style={{ color: NAVY }}
-          >
+          <Text className="font-bold text-[28px] ml-2 text-[#1F2746]">
             muolingo
           </Text>
         </View>
 
         <View className="mb-2">
-          <Text
-            className="font-bold text-[30px] leading-[1.15]"
-            style={{ color: NAVY }}
-          >
+          <Text className="font-bold text-[30px] leading-[1.15] text-[#1F2746]">
             Your AI language
           </Text>
-          <Text
-            className="font-bold text-[30px] leading-[1.15]"
-            style={{ color: PURPLE }}
-          >
+          <Text className="font-bold text-[30px] leading-[1.15] text-[#5B4CF6]">
             teacher.
           </Text>
         </View>
 
-        <Text
-          className="text-[15px] leading-[1.5] mb-3"
-          style={{ color: GRAY }}
-        >
+        <Text className="text-[15px] leading-[1.5] mb-3 text-[#8E93A8]">
           Real conversations, personalized{"\n"}lessons, anytime, anywhere.
         </Text>
 
         <View className="flex-1 items-center justify-center">
           <View className="relative w-[280px] h-[260px]">
             <SpeechBubble
-              color={NAVY}
+              color="#1F2746"
               style={{ top: 8, left: -16, transform: [{ rotate: "-8deg" }] }}
             >
               Hello!
             </SpeechBubble>
 
             <SpeechBubble
-              color={PURPLE}
+              color="#5B4CF6"
               style={{ top: -4, right: -8, transform: [{ rotate: "5deg" }] }}
             >
               ¡Hola!
@@ -148,16 +126,15 @@ export default function Onboarding() {
         style={{ paddingBottom: insets.bottom + 12 }}
       >
         <Pressable
-          className="w-full rounded-[20px] py-[18px] active:opacity-90"
+          className="w-full rounded-[20px] py-[18px] active:opacity-90 bg-[#5B4CF6]"
           style={{
-            backgroundColor: PURPLE,
-            shadowColor: PURPLE,
+            shadowColor: "#5B4CF6",
             shadowOffset: { width: 0, height: 4 },
             shadowOpacity: 0.3,
             shadowRadius: 8,
             elevation: 6,
           }}
-          onPress={() => {}}
+          onPress={() => router.push("/sign-up")}
         >
           <View className="flex-row items-center justify-center relative">
             <Text className="font-semibold text-white text-[17px]">
