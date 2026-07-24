@@ -1,5 +1,5 @@
 import { useAuth, useUser } from "@clerk/expo";
-import { Redirect } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 import { View, Text, Pressable } from "../src/tw";
 import { ActivityIndicator } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -9,6 +9,7 @@ export default function Index() {
   const { isSignedIn, isLoaded, signOut } = useAuth();
   const { user } = useUser();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   if (!isLoaded) {
     return (
@@ -118,6 +119,36 @@ export default function Index() {
             {user?.id || "N/A"}
           </Text>
         </View>
+
+        {/* Select Language */}
+        <Pressable
+          className="flex-row items-center rounded-2xl p-5 mt-4"
+          style={{
+            backgroundColor: "#FFFFFF",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.06,
+            shadowRadius: 12,
+            elevation: 3,
+          }}
+          onPress={() => router.push("/language-select")}
+        >
+          <View
+            className="w-12 h-12 rounded-full items-center justify-center mr-4"
+            style={{ backgroundColor: "#F0EDFF" }}
+          >
+            <Ionicons name="globe-outline" size={22} color="#5B4CF6" />
+          </View>
+          <View className="flex-1">
+            <Text className="font-semibold text-[16px] text-text mb-0.5">
+              Select Language
+            </Text>
+            <Text className="text-[13px] text-text-secondary">
+              Choose what to learn
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color="#C4C4C4" />
+        </Pressable>
       </View>
     </View>
   );
