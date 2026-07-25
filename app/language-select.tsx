@@ -49,12 +49,7 @@ export default function LanguageSelect() {
 
           {/* Search Bar */}
           <View
-            className="flex-row items-center rounded-[20px] px-4 h-[50px] mb-6"
-            style={{
-              backgroundColor: "#FFFFFF",
-              borderWidth: 1,
-              borderColor: "#E8E8EE",
-            }}
+            className="flex-row items-center rounded-[20px] px-4 h-[50px] mb-6 bg-white border border-[#E8E8EE]"
           >
             <Ionicons name="search-outline" size={20} color="#AFAFAF" />
             <TextInput
@@ -106,8 +101,7 @@ export default function LanguageSelect() {
                 >
                   {/* Flag Circle */}
                   <View
-                    className="w-[52px] h-[52px] rounded-full items-center justify-center mr-4"
-                    style={{ backgroundColor: "#F0F0F0" }}
+                    className="w-[52px] h-[52px] rounded-full items-center justify-center mr-4 bg-[#F0F0F0]"
                   >
                     <Text className="text-[26px]">{lang.flag}</Text>
                   </View>
@@ -125,8 +119,7 @@ export default function LanguageSelect() {
                   {/* Right Icon */}
                   {isSelected ? (
                     <View
-                      className="w-[30px] h-[30px] rounded-full items-center justify-center"
-                      style={{ backgroundColor: "#5B4CF6" }}
+                      className="w-[30px] h-[30px] rounded-full items-center justify-center bg-[#5B4CF6]"
                     >
                       <Ionicons name="checkmark" size={18} color="#FFFFFF" />
                     </View>
@@ -144,12 +137,7 @@ export default function LanguageSelect() {
 
           {/* Confirmation Button */}
           <Pressable
-            className="w-full flex-row items-center justify-center rounded-[20px] h-[56px] mt-4 mb-3"
-            style={{
-              backgroundColor: "#FFFFFF",
-              borderWidth: 1,
-              borderColor: "#E5E5E5",
-            }}
+            className="w-full flex-row items-center justify-center rounded-[20px] h-[56px] mt-4 mb-3 bg-white border border-[#E5E5E5]"
             onPress={() => router.back()}
           >
             <Ionicons
