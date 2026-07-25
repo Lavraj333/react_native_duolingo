@@ -6,10 +6,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { languages, learnerCounts } from "../src/data/languages";
+import { useLanguageStore } from "../src/stores/useLanguageStore";
 
 export default function LanguageSelect() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const setSelectedLanguage = useLanguageStore((s) => s.setSelectedLanguage);
   const [selectedId, setSelectedId] = useState("spanish");
   const [search, setSearch] = useState("");
 
@@ -138,7 +140,10 @@ export default function LanguageSelect() {
           {/* Confirmation Button */}
           <Pressable
             className="w-full flex-row items-center justify-center rounded-[20px] h-[56px] mt-4 mb-3 bg-white border border-[#E5E5E5]"
-            onPress={() => router.back()}
+            onPress={() => {
+              setSelectedLanguage(selectedId);
+              router.replace("/");
+            }}
           >
             <Ionicons
               name="globe-outline"
