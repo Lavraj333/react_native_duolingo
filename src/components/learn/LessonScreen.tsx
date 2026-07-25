@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Alert } from "react-native";
 import { View, Text, ScrollView } from "../../tw";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 import { useLanguageStore } from "../../stores/useLanguageStore";
 import { getLanguageById } from "../../data/languages";
 import { getUnitsByLanguage } from "../../data/units";
@@ -13,6 +14,7 @@ import LessonCard from "./LessonCard";
 
 export default function LessonScreen() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabType>("lessons");
 
   const selectedLanguageId = useLanguageStore((s) => s.selectedLanguage);
@@ -34,7 +36,7 @@ export default function LessonScreen() {
     if (status === "locked") {
       Alert.alert("Lesson Locked", "Complete previous lessons to unlock this one.");
     } else {
-      Alert.alert("Opening Lesson", `Starting: ${lesson.title}`);
+      router.push({ pathname: "/audio-lesson", params: { lessonId: lesson.id } });
     }
   };
 
