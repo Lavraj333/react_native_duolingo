@@ -35,10 +35,18 @@
 
     --color-orange: #FF9600;
     --color-orange-dark: #D97F00;
+    --color-orange-accent: #FF8A00;
 
     /* Brand Colors */
     --color-brand: #5837EC;
     --color-brand-dark: #4629C4;
+
+    /* Home Dashboard Colors */
+    --color-navy: #1F2746;
+    --color-gray-secondary: #8E93A8;
+    --color-cream: #FFF7ED;
+    --color-light-green: #F3FBEF;
+    --color-green-accent: #56C23A;
 
     /* Neutral Colors */
     --color-text: #2B2B2B;
