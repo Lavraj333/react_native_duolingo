@@ -1,20 +1,25 @@
-import { View, Text } from "../../src/tw";
+import { View, ScrollView } from "../../src/tw";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import HomeHeader from "../../src/components/home/HomeHeader";
+import DailyGoalCard from "../../src/components/home/DailyGoalCard";
+import ContinueLearningCard from "../../src/components/home/ContinueLearningCard";
+import TodaysPlanSection from "../../src/components/home/TodaysPlanSection";
 
 export default function HomeTab() {
   const insets = useSafeAreaInsets();
 
   return (
-    <View className="flex-1 bg-white items-center justify-center">
-      <View
-        style={{ paddingBottom: insets.bottom + 80 }}
-        className="items-center"
+    <View className="flex-1 bg-white">
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingTop: insets.top + 8, paddingBottom: insets.bottom + 100 }}
       >
-        <Text className="font-bold text-[24px] text-[#1F2746]">Home</Text>
-        <Text className="text-[14px] text-[#8E93A8] mt-2">
-          Dashboard coming soon
-        </Text>
-      </View>
+        <HomeHeader streak={12} />
+        <DailyGoalCard currentXP={15} targetXP={20} />
+        <ContinueLearningCard />
+        <TodaysPlanSection />
+      </ScrollView>
     </View>
   );
 }

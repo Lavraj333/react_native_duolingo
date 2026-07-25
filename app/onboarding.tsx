@@ -1,5 +1,6 @@
 import { Pressable, Text, View } from "../src/tw";
 import { Image } from "../src/tw/image";
+import { images } from "../src/images";
 
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -71,7 +72,7 @@ export default function Onboarding() {
       >
         <View className="flex-row items-center justify-center mb-4">
           <Image
-            source={require("../assets/images/moscot-logo.png")}
+            source={images.moscotLogo}
             className="w-11 h-11"
             contentFit="contain"
           />
@@ -130,7 +131,7 @@ export default function Onboarding() {
             </SpeechBubble>
 
             <Image
-              source={require("../assets/images/mascot-welcome.png")}
+              source={images.mascotWelcome}
               className="w-full h-full"
               contentFit="contain"
             />

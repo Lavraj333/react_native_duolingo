@@ -7,6 +7,7 @@ import { Image } from "../src/tw/image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import VerificationModal from "../src/components/VerificationModal";
+import { images } from "../src/images";
 
 function SocialButton({
   icon,
@@ -130,7 +131,7 @@ export default function SignUp() {
           {/* Mascot */}
           <View className="items-center mb-6">
             <Image
-              source={require("../assets/images/mascot-auth.png")}
+              source={images.mascotAuth}
               className="w-[180px] h-[150px]"
               contentFit="contain"
             />

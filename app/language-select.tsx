@@ -7,6 +7,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { languages, learnerCounts } from "../src/data/languages";
 import { useLanguageStore } from "../src/stores/useLanguageStore";
+import { images } from "../src/images";
 
 export default function LanguageSelect() {
   const insets = useSafeAreaInsets();
@@ -159,7 +160,7 @@ export default function LanguageSelect() {
           {/* Bottom Illustration — full-width, 1:1 aspect ratio */}
           <View className="items-center">
             <Image
-              source={require("../assets/images/earth.png")}
+              source={images.earth}
               style={{
                 width: Dimensions.get("window").width - 56,
                 height: Dimensions.get("window").width - 56,
