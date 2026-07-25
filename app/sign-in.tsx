@@ -21,12 +21,7 @@ function SocialButton({
 }) {
   return (
     <Pressable
-      className="w-full flex-row items-center rounded-2xl py-[15px] px-5 mb-3"
-      style={{
-        backgroundColor: "#FFFFFF",
-        borderWidth: 1,
-        borderColor: "#E5E5E5",
-      }}
+      className="w-full flex-row items-center rounded-2xl py-[15px] px-5 mb-3 bg-white border border-[#E5E5E5]"
       onPress={onPress}
       disabled={loading}
     >
@@ -257,7 +252,7 @@ export default function SignIn() {
 
           {/* Auth Error */}
           {authError && (
-            <View className="mb-3 px-3 py-2 rounded-lg" style={{ backgroundColor: "#FEF0F0" }}>
+            <View className="mb-3 px-3 py-2 rounded-lg bg-[#FEF0F0]">
               <Text className="text-[13px] text-[#d32f2f]">{authError}</Text>
             </View>
           )}

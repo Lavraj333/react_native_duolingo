@@ -165,10 +165,7 @@ export default function VerificationModal({
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
-        <View
-          className="flex-1 justify-end"
-          style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
-        >
+        <View className="flex-1 justify-end bg-black/40">
           <View
             className="bg-white rounded-t-3xl px-7 pt-8 pb-10"
             style={{ paddingBottom: insets.bottom + 32 }}
@@ -189,7 +186,7 @@ export default function VerificationModal({
             </Text>
 
             {verifyError && (
-              <View className="mb-4 px-3 py-2 rounded-lg" style={{ backgroundColor: "#FEF0F0" }}>
+              <View className="mb-4 px-3 py-2 rounded-lg bg-[#FEF0F0]">
                 <Text className="text-[13px] text-[#d32f2f]">{verifyError}</Text>
               </View>
             )}
