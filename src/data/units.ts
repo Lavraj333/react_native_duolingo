@@ -69,6 +69,39 @@ export const units: Unit[] = [
     requiredCompletedLessons: 1,
     color: "blue",
   },
+
+  // ── Korean ──
+  {
+    id: "korean_basics",
+    languageId: "korean",
+    title: "At the Cafe",
+    description: "Learn Hangul basics and everyday Korean expressions.",
+    order: 1,
+    requiredCompletedLessons: 0,
+    color: "green",
+  },
+
+  // ── German ──
+  {
+    id: "german_basics",
+    languageId: "german",
+    title: "At the Cafe",
+    description: "Learn essential German words and simple sentences.",
+    order: 1,
+    requiredCompletedLessons: 0,
+    color: "green",
+  },
+
+  // ── Chinese ──
+  {
+    id: "chinese_basics",
+    languageId: "chinese",
+    title: "At the Cafe",
+    description: "Learn pinyin, tones, and essential Mandarin characters.",
+    order: 1,
+    requiredCompletedLessons: 0,
+    color: "green",
+  },
 ] as const;
 
 export const getUnitsByLanguage = (languageId: string): Unit[] =>

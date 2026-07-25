@@ -8,4 +8,5 @@ export const images = {
   earth: require("../assets/images/earth.png"),
   splash: require("../assets/images/splash-icon.png"),
   icon: require("../assets/images/icon.png"),
+  foxTeacher: require("../assets/images/mascot-welcome.png"),
 } as const;
