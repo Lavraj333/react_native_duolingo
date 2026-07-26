@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { View, Text } from "../../tw";
 import { Image } from "../../tw/image";
 import { images } from "../../images";
@@ -25,18 +26,20 @@ export default function TeacherPreview({
 }: TeacherPreviewProps) {
   const scale = useSharedValue(0.85);
 
-  scale.value = withDelay(
-    200,
-    withRepeat(
-      withSequence(
-        withTiming(1, { duration: 800, easing: Easing.out(Easing.cubic) }),
-        withTiming(0.97, { duration: 1200, easing: Easing.inOut(Easing.cubic) }),
-        withTiming(1, { duration: 800, easing: Easing.inOut(Easing.cubic) })
-      ),
-      -1,
-      true
-    )
-  );
+  useEffect(() => {
+    scale.value = withDelay(
+      200,
+      withRepeat(
+        withSequence(
+          withTiming(1, { duration: 800, easing: Easing.out(Easing.cubic) }),
+          withTiming(0.97, { duration: 1200, easing: Easing.inOut(Easing.cubic) }),
+          withTiming(1, { duration: 800, easing: Easing.inOut(Easing.cubic) })
+        ),
+        -1,
+        true
+      )
+    );
+  }, [scale]);
 
   const teacherAnimStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],

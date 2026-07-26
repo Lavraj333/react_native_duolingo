@@ -1,4 +1,5 @@
-import { useState, useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import { ActivityIndicator } from "react-native";
 import { View, Text, Pressable, ScrollView } from "../../tw";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -10,9 +11,48 @@ import SpeechBubble from "./SpeechBubble";
 import CallControls from "./CallControls";
 import PerformanceCard from "./PerformanceCard";
 import SessionBottomNav from "./SessionBottomNav";
+import { useAudioCall, type CallState } from "../../hooks/useAudioCall";
 
 interface AudioLessonScreenProps {
   lesson: Lesson;
+}
+
+function formatDuration(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+function statusLabel(state: CallState): string {
+  switch (state) {
+    case "connecting":
+      return "Connecting...";
+    case "joined":
+      return "Online";
+    case "reconnecting":
+      return "Reconnecting...";
+    case "error":
+      return "Error";
+    case "ended":
+      return "Ended";
+    default:
+      return "Preparing...";
+  }
+}
+
+function statusColor(state: CallState): string {
+  switch (state) {
+    case "joined":
+      return "#4CAF50";
+    case "connecting":
+    case "reconnecting":
+      return "#FFC800";
+    case "error":
+    case "ended":
+      return "#FF4B4B";
+    default:
+      return "#8E93A8";
+  }
 }
 
 export default function AudioLessonScreen({ lesson }: AudioLessonScreenProps) {
@@ -21,18 +61,31 @@ export default function AudioLessonScreen({ lesson }: AudioLessonScreenProps) {
 
   const language = getLanguageById(lesson.languageId);
 
-  const [isMuted, setIsMuted] = useState(false);
-  const [isCameraOff, setIsCameraOff] = useState(true);
-  const [showSubtitles, setShowSubtitles] = useState(true);
-  const [sessionStatus, setSessionStatus] = useState<"connecting" | "active" | "ended">("active");
+  const {
+    callState,
+    isMuted,
+    error,
+    duration,
+    createAndJoinCall,
+    toggleMic,
+    endCall,
+  } = useAudioCall({
+    lessonId: lesson.id,
+    languageId: lesson.languageId,
+  });
+
+  // Auto-join when the screen mounts
+  useEffect(() => {
+    createAndJoinCall();
+  }, [createAndJoinCall]);
 
   const openingLine = lesson.aiPrompt?.openingLine ?? "Hello! Let's practice together.";
-  const [currentSpeech] = useState(openingLine);
+  const currentSpeech = openingLine;
 
   const handleEndCall = useCallback(() => {
-    setSessionStatus("ended");
+    endCall();
     setTimeout(() => router.back(), 600);
-  }, [router]);
+  }, [endCall, router]);
 
   const handleNavigate = useCallback(
     (route: string) => {
@@ -75,22 +128,16 @@ export default function AudioLessonScreen({ lesson }: AudioLessonScreenProps) {
             <View className="flex-row items-center mt-0.5">
               <View
                 className="w-[6px] h-[6px] rounded-full mr-1.5"
-                style={{
-                  backgroundColor:
-                    sessionStatus === "active"
-                      ? "#4CAF50"
-                      : sessionStatus === "connecting"
-                        ? "#FFC800"
-                        : "#FF4B4B",
-                }}
+                style={{ backgroundColor: statusColor(callState) }}
               />
               <Text className="text-[12px] text-[#8E93A8]">
-                {sessionStatus === "active"
-                  ? "Online"
-                  : sessionStatus === "connecting"
-                    ? "Connecting..."
-                    : "Ended"}
+                {statusLabel(callState)}
               </Text>
+              {callState === "joined" && duration > 0 && (
+                <Text className="text-[12px] text-[#8E93A8] ml-1.5">
+                  {formatDuration(duration)}
+                </Text>
+              )}
             </View>
           </View>
 
@@ -103,7 +150,7 @@ export default function AudioLessonScreen({ lesson }: AudioLessonScreenProps) {
                 borderColor: "#F0F0F0",
               }}
             >
-              <Ionicons name="videocam-outline" size={18} color="#1F2746" />
+              <Ionicons name="videocam-off-outline" size={18} color="#8E93A8" />
             </View>
             <View
               className="w-[38px] h-[38px] rounded-full items-center justify-center mr-2"
@@ -163,12 +210,52 @@ export default function AudioLessonScreen({ lesson }: AudioLessonScreenProps) {
           </Text>
         </View>
 
+        {/* Connecting overlay */}
+        {callState === "connecting" && (
+          <View className="mx-5 mb-3 rounded-2xl overflow-hidden" style={{ backgroundColor: "#FFF5EB" }}>
+            <View className="items-center justify-center py-10">
+              <ActivityIndicator size="large" color="#5B4CF6" />
+              <Text className="text-[14px] text-[#8E93A8] mt-3">
+                Joining audio lesson...
+              </Text>
+            </View>
+          </View>
+        )}
+
+        {/* Error banner */}
+        {callState === "error" && error && (
+          <View
+            className="mx-5 mb-3 rounded-2xl px-4 py-3"
+            style={{ backgroundColor: "#FFF0F0" }}
+          >
+            <View className="flex-row items-center">
+              <Ionicons name="alert-circle" size={18} color="#FF4B4B" />
+              <Text className="text-[13px] text-[#FF4B4B] ml-2 flex-1">
+                {error}
+              </Text>
+            </View>
+            <Pressable
+              className="mt-2 rounded-full py-2 items-center"
+              style={{ backgroundColor: "#FF4B4B" }}
+              onPress={createAndJoinCall}
+            >
+              <Text className="text-[13px] font-semibold text-white">Retry</Text>
+            </Pressable>
+          </View>
+        )}
+
         {/* Teacher area */}
         <View className="relative">
           <TeacherPreview
             teacherName="Maria"
             language={language?.name ?? "Spanish"}
-            sessionStatus={sessionStatus}
+            sessionStatus={
+              callState === "joined"
+                ? "active"
+                : callState === "connecting" || callState === "reconnecting"
+                  ? "connecting"
+                  : "ended"
+            }
           />
 
           <SpeechBubble text={currentSpeech} />
@@ -194,14 +281,26 @@ export default function AudioLessonScreen({ lesson }: AudioLessonScreenProps) {
           ))}
         </View>
 
+        {/* Muted speaking hint */}
+        {isMuted && callState === "joined" && (
+          <View className="mx-5 mb-2 rounded-xl px-4 py-2" style={{ backgroundColor: "#FFF8E1" }}>
+            <View className="flex-row items-center">
+              <Ionicons name="mic-off" size={14} color="#FFC800" />
+              <Text className="text-[12px] text-[#8E93A8] ml-2">
+                You are muted. Tap the mic to speak.
+              </Text>
+            </View>
+          </View>
+        )}
+
         {/* Call controls */}
         <CallControls
           isMuted={isMuted}
-          isCameraOff={isCameraOff}
-          showSubtitles={showSubtitles}
-          onToggleMic={() => setIsMuted((prev) => !prev)}
-          onToggleCamera={() => setIsCameraOff((prev) => !prev)}
-          onToggleSubtitles={() => setShowSubtitles((prev) => !prev)}
+          isCameraOff={true}
+          showSubtitles={false}
+          onToggleMic={toggleMic}
+          onToggleCamera={() => {}}
+          onToggleSubtitles={() => {}}
           onEndCall={handleEndCall}
         />
 

@@ -4,8 +4,10 @@ import { tokenCache } from "@clerk/expo/token-cache";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { loadFonts } from "../theme/fonts";
 import { View } from "../src/tw";
+import StreamVideoProvider from "../src/components/StreamVideoProvider";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
@@ -33,11 +35,15 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <View className="flex-1" onLayout={onLayoutRootView}>
-        <Stack screenOptions={{ headerShown: false }} />
-      </View>
-    </ClerkProvider>
+    <SafeAreaProvider>
+      <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+        <StreamVideoProvider>
+          <View className="flex-1" onLayout={onLayoutRootView}>
+            <Stack screenOptions={{ headerShown: false }} />
+          </View>
+        </StreamVideoProvider>
+      </ClerkProvider>
+    </SafeAreaProvider>
   );
 }
 
